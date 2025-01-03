@@ -42,7 +42,6 @@ exports.handler = async (event, context) => {
 		let chathistory = requestBody.history || [];
 		const modelconfig = requestBody.modelconfig;
 		const botinstruction = "[Bot instruction: generate response short, natural, human-like] ";
-		chathistory.push({ role: "user", parts: [{ text: botinstruction + prompt }] });
 		if (!model || modelconfig.modelname != model.model || modelconfig.temperature != model.temperature) {
 			model = generator.getGenerativeModel({ model: modelconfig.modelname, generationConfig: {
 				temperature: modelconfig.temperature,
@@ -54,7 +53,6 @@ exports.handler = async (event, context) => {
 		const chat = model.startChat({ history: chathistory });
 		const genratedContent = await chat.sendMessage(botinstruction + prompt);
 		const output = genratedContent.response.text();
-		chathistory.push({ role: "model", parts: [{ text: output }] });
 
 		return {
 			statusCode: 200,
