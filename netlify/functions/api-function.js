@@ -15,6 +15,17 @@ exports.handler = async (event, context) => {
 		if (!generator) {
 			generator = new GoogleGenerativeAI(apiKey);
 		}
+		if (!event.body) {
+			return {
+				statusCode: 400,
+				body: JSON.stringify({ error: "Request body is empty" }),
+				headers: {
+					"Content-Type": "application/json",
+					"Access-Control-Allow-Origin": "*",
+					"Access-Control-Allow-Headers": "Content-Type",
+					},
+				};
+			}
 
 		const requestBody = JSON.parse(event.body);
 		const prompt = requestBody.prompt;
