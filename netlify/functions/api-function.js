@@ -43,8 +43,8 @@ exports.handler = async (event, context) => {
 		const modelconfig = requestBody.modelconfig;
 		const botinstruction = "[Bot instruction: generate response short, natural, human-like] ";
 		chathistory.push({ role: "user", parts: [{ text: botinstruction + prompt }] });
-		if (!model || modelconfig.modelName != model.model || modelconfig.temperature != model.temperature) {
-			model = generator.getGenerativeModel({ model: modelconfig.modelName, generationConfig: {
+		if (!model || modelconfig.modelname != model.model || modelconfig.temperature != model.temperature) {
+			model = generator.getGenerativeModel({ model: modelconfig.modelname, generationConfig: {
 				temperature: modelconfig.temperature,
 				maxOutputTokens: MAX_TOKEN,
 				responseMimeType: responsetype
