@@ -7,6 +7,17 @@ const MAX_TOKEN = 200000;
 const responsetype = "text/plain";
 
 exports.handler = async (event, context) => {
+	console.log("Request method:", event.httpMethod);
+	if (event.httpMethod === "OPTIONS") {
+		return {
+			statusCode: 200,
+			headers: {
+				"Access-Control-Allow-Origin": "https://polywcube.github.io",
+				"Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+				"Access-Control-Allow-Headers": "Content-Type",
+			},
+		};
+	}
 	try {
 		const apiKey = process.env.GEMINI_API_KEY_1;
 		if (!apiKey) {
@@ -20,9 +31,8 @@ exports.handler = async (event, context) => {
 				statusCode: 400,
 				body: JSON.stringify({ error: "Request body is empty" }),
 				headers: {
-					"Content-Type": "application/json",
-					"Access-Control-Allow-Origin": "https://polywcube.github.io",
-					"Access-Control-Allow-Headers": "Content-Type",
+					"Access-Control-Allow-Origin": "*",
+					"Access-Control-Allow-Headers": "Content-Type"
 					},
 				};
 			}
@@ -51,8 +61,8 @@ exports.handler = async (event, context) => {
 			body: JSON.stringify({ response: output, history: chathistory }),
 			headers: {
 				"Content-Type": "application/json",
-				"Access-Control-Allow-Origin": "https://polywcube.github.io",
-				"Access-Control-Allow-Headers": "Content-Type",
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Headers": "Content-Type"
 			},
 		};
 	} catch (error) {
@@ -61,9 +71,8 @@ exports.handler = async (event, context) => {
 			statusCode: 500,
 			body: JSON.stringify({ error: error.message }),
 			headers: {
-				"Content-Type": "application/json",
-				"Access-Control-Allow-Origin": "https://polywcube.github.io",
-				"Access-Control-Allow-Headers": "Content-Type",
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Headers": "Content-Type"
 			},
 		};
 	}
