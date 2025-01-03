@@ -21,7 +21,7 @@ exports.handler = async (event, context) => {
 				body: JSON.stringify({ error: "Request body is empty" }),
 				headers: {
 					"Content-Type": "application/json",
-					"Access-Control-Allow-Origin": "*",
+					"Access-Control-Allow-Origin": "https://polywcube.github.io",
 					"Access-Control-Allow-Headers": "Content-Type",
 					},
 				};
@@ -50,7 +50,7 @@ exports.handler = async (event, context) => {
 			statusCode: 200,
 			body: JSON.stringify({ response: output, history: chathistory }),
 			headers: {
-				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Origin": "https://polywcube.github.io",
 				"Access-Control-Allow-Headers": "Content-Type",
 			},
 		};
@@ -60,7 +60,7 @@ exports.handler = async (event, context) => {
 			statusCode: 500,
 			body: JSON.stringify({ error: error.message }),
 			headers: {
-				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Origin": "https://polywcube.github.io",
 				"Access-Control-Allow-Headers": "Content-Type",
 			},
 		};
