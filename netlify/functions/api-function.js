@@ -52,7 +52,7 @@ exports.handler = async (event, context) => {
 		}
 
 		const chat = model.startChat({ history: chathistory });
-		const genratedContent = await chat.sendMessage();
+		const genratedContent = await chat.sendMessage(botinstruction + prompt);
 		const output = genratedContent.response.text();
 		chathistory.push({ role: "model", parts: [{ text: output }] });
 
