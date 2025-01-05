@@ -1,8 +1,9 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY_2);
-const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+const apiKey = process.env.GEMINI_API_KEY_2;
+console.log(apiKey);
+const generator = new GoogleGenerativeAI(process.env.GEMINI_API_KEY_2);
+const model = generator.getGenerativeModel({ model: "gemini-pro-vision" });
 
 exports.handler = async (event, context) => {
 	if (event.httpMethod === "OPTIONS") {
@@ -43,7 +44,7 @@ exports.handler = async (event, context) => {
 			headers: {
 				"Content-Type": "application/json",
 				"Access-Control-Allow-Origin": "https://polywcube.github.io",
-				"Access-Control-Allow-Headers": "Content-Type",
+				"Access-Control-Allow-Headers": "Content-Type"
 			},
 		};
 	} catch (error) {
@@ -54,7 +55,7 @@ exports.handler = async (event, context) => {
 			headers: {
 				"Content-Type": "application/json",
 				"Access-Control-Allow-Origin": "https://polywcube.github.io",
-				"Access-Control-Allow-Headers": "Content-Type",
+				"Access-Control-Allow-Headers": "Content-Type"
 			},
 		};
 	}

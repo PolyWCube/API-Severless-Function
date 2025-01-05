@@ -1,5 +1,7 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
+const apiKey = process.env.GEMINI_API_KEY_1;
+
 let generator;
 let model;
 
@@ -18,7 +20,6 @@ exports.handler = async (event, context) => {
 		};
 	}
 	try {
-		const apiKey = process.env.GEMINI_API_KEY_1;
 		if (!generator) {
 			generator = new GoogleGenerativeAI(apiKey);
 		}
