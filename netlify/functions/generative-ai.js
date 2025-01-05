@@ -19,9 +19,6 @@ exports.handler = async (event, context) => {
 	}
 	try {
 		const apiKey = process.env.GEMINI_API_KEY_1;
-		if (!apiKey) {
-			throw new Error("Gemini API Key not found in environment variables");
-		}
 		if (!generator) {
 			generator = new GoogleGenerativeAI(apiKey);
 		}

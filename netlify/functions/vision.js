@@ -1,5 +1,8 @@
-const vision = require('@google-cloud/vision').v1;
-const client = new vision.ImageAnnotatorClient();
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY_2);
+const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
 
 exports.handler = async (event, context) => {
 	if (event.httpMethod === "OPTIONS") {
@@ -20,36 +23,23 @@ exports.handler = async (event, context) => {
 			return { statusCode: 400, body: JSON.stringify({ error: "No image data provided" }) };
 		}
 
-		const imageBuffer = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+		const imageBytes = Buffer.from(imageDataUrl.split(',')[1], 'base64');
 
-		const [result] = await client.annotateImage({
-			image: { content: imageBuffer },
-			features: [{ type: 'IMAGE_PROPERTIES' }]
-		});
+		const result = await model.generateContent([
+			"[Describe following image in detail for image understanding response]",
+			{
+				inlineData: {
+					data: imageBytes.toString("base64"),
+					mimeType: "image/jpeg",
+				},
+			}
+		]);
 
-		if (!result.imagePropertiesAnnotation || !result.imagePropertiesAnnotation.dominantColors || !result.imagePropertiesAnnotation.dominantColors.colors) {
-			return { statusCode: 500, body: JSON.stringify({ error: "Could not get image properties" }) };
-		}
-
-		const colors = result.imagePropertiesAnnotation.dominantColors.colors;
-		let description = "The image has dominant colors of: ";
-		colors.forEach(colorInfo => {
-			const color = colorInfo.color;
-			description += `rgb(${color.red}, ${color.green}, ${color.blue}) `;
-		});
-
-		const [captionResult] = await client.annotateImage({
-			image: { content: imageBuffer },
-			features: [{ type: 'WEB_DETECTION' }],
-		});
-
-		if (captionResult.webDetection && captionResult.webDetection.bestGuessLabels && captionResult.webDetection.bestGuessLabels.length > 0) {
-			description += `and is likely related to: ${captionResult.webDetection.bestGuessLabels[0].label}`;
-		}
+		const description = result.response.text();
 
 		return {
 			statusCode: 200,
-			body: JSON.stringify({ description: description }),
+			body: JSON.stringify({ description }),
 			headers: {
 				"Content-Type": "application/json",
 				"Access-Control-Allow-Origin": "https://polywcube.github.io",
@@ -57,7 +47,7 @@ exports.handler = async (event, context) => {
 			},
 		};
 	} catch (error) {
-		console.error("Function error:", error);
+		console.error("Error in Gemini function:", error);
 		return {
 			statusCode: 500,
 			body: JSON.stringify({ error: error.message }),
