@@ -3,7 +3,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const apiKey = process.env.GEMINI_API_KEY_2;
 console.log(apiKey);
 const generator = new GoogleGenerativeAI(apiKey);
-const model = generator.getGenerativeModel({ model: "gemini-pro-vision" });
+const model = generator.getGenerativeModel({ model: "gemini-1.5-pro" });
 
 exports.handler = async (event, context) => {
 	if (event.httpMethod === "OPTIONS") {
