@@ -7,7 +7,6 @@ const MAX_TOKEN = 200000;
 const responsetype = "text/plain";
 
 exports.handler = async (event, context) => {
-	console.log("Request method:", event.httpMethod);
 	if (event.httpMethod === "OPTIONS") {
 		return {
 			statusCode: 200,

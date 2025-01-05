@@ -2,6 +2,16 @@ const vision = require('@google-cloud/vision').v1;
 const client = new vision.ImageAnnotatorClient();
 
 exports.handler = async (event, context) => {
+	if (event.httpMethod === "OPTIONS") {
+		return {
+			statusCode: 200,
+			headers: {
+				"Access-Control-Allow-Origin": "https://polywcube.github.io",
+				"Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+				"Access-Control-Allow-Headers": "Content-Type",
+			},
+		};
+	}
 	try {
 		const requestBody = JSON.parse(event.body);
 		const imageDataUrl = requestBody.image;
