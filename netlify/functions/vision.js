@@ -7,7 +7,7 @@ const model = generator.getGenerativeModel({
 	model: "gemini-1.5-pro",
 	systemInstruction: {
 		parts: [
-			{text: "Generate a detail image description into text prompt for text processing model."},
+			{text: "Generate a prompt with important detail or information image description for text processing model."}
 		]
 	}
 });
@@ -34,12 +34,20 @@ exports.handler = async (event, context) => {
 		const imageBytes = Buffer.from(imageDataUrl.split(',')[1], 'base64');
 
 		const result = await model.generateContent([
-			{
-				inlineData: {
-					data: imageBytes.toString("base64"),
-					mimeType: "image/jpeg",
-				},
-			}
+			contents: [
+				{
+					role: "user",
+					parts: [
+						{
+							inlineData: {
+								data: imageBytes.toString("base64"),
+								mimeType: "image/jpeg",
+							}
+						},
+						{ text: "Describe the image." }
+					]
+				}
+			]
 		]);
 
 		const description = result.response.text();
