@@ -6,9 +6,7 @@ const generator = new GoogleGenerativeAI(apiKey);
 const model = generator.getGenerativeModel({
 	model: "gemini-1.5-pro",
 	systemInstruction: {
-		parts: [
-			{text: "Generate a prompt with important detail or information image description for text processing model."}
-		]
+		parts: { text: "Generate a prompt with important detail or information image description for text processing model." }
 	}
 });
 
@@ -20,7 +18,7 @@ exports.handler = async (event, context) => {
 				"Access-Control-Allow-Origin": "https://polywcube.github.io",
 				"Access-Control-Allow-Methods": "POST, GET, OPTIONS",
 				"Access-Control-Allow-Headers": "Content-Type",
-			},
+			}
 		};
 	}
 	try {
