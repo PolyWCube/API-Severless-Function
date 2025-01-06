@@ -5,7 +5,7 @@ console.log(apiKey);
 const generator = new GoogleGenerativeAI(apiKey);
 const model = generator.getGenerativeModel({
 	model: "gemini-1.5-pro",
-	system_instruction = "Describe the image in detail for image understanding in text chat prompt"
+	system_instruction: "Describe the image in detail for image understanding in text chat prompt"
 });
 
 exports.handler = async (event, context) => {
