@@ -38,17 +38,24 @@ exports.handler = async (event, context) => {
 		const prompt = requestBody.prompt;
 		let chathistory = requestBody.history || [];
 		const modelconfig = requestBody.modelconfig;
-		const botinstruction = "[Generate response not too long, natural, human-like] ";
 		if (!model || modelconfig.modelname != model.model || modelconfig.temperature != model.temperature) {
-			model = generator.getGenerativeModel({ model: modelconfig.modelname, generationConfig: {
-				temperature: modelconfig.temperature,
-				maxOutputTokens: MAX_TOKEN,
-				responseMimeType: responsetype
-			} });
+			model = generator.getGenerativeModel({
+				model: modelconfig.modelname,
+				generationConfig: {
+					temperature: modelconfig.temperature,
+					maxOutputTokens: MAX_TOKEN,
+					responseMimeType: responsetype
+				},
+				system_instruction = [
+					"You are user's assistance, friend,... chat with user to guide and fullfill his/her curiousity, loneliness,...",
+					"Your name is ALAN, a chatbot can recieve image, text and output text.",
+					"Generate human-like, natural response."
+				]
+			});
 		}
 
 		const chat = model.startChat({ history: chathistory });
-		const genratedContent = await chat.sendMessage(botinstruction + prompt);
+		const genratedContent = await chat.sendMessage(prompt);
 		const output = genratedContent.response.text();
 
 		return {

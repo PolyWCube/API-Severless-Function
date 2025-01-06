@@ -3,7 +3,10 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const apiKey = process.env.GEMINI_API_KEY_2;
 console.log(apiKey);
 const generator = new GoogleGenerativeAI(apiKey);
-const model = generator.getGenerativeModel({ model: "gemini-1.5-pro" });
+const model = generator.getGenerativeModel({
+	model: "gemini-1.5-pro",
+	system_instruction = "Describe the image in detail for image understanding in text chat prompt"
+});
 
 exports.handler = async (event, context) => {
 	if (event.httpMethod === "OPTIONS") {
@@ -27,7 +30,6 @@ exports.handler = async (event, context) => {
 		const imageBytes = Buffer.from(imageDataUrl.split(',')[1], 'base64');
 
 		const result = await model.generateContent([
-			"[Describe following image in detail for image understanding response]",
 			{
 				inlineData: {
 					data: imageBytes.toString("base64"),
