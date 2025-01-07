@@ -15,14 +15,12 @@ exports.handler = async (event, context) => {
 			headers: {
 				"Access-Control-Allow-Origin": "https://polywcube.github.io",
 				"Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-				"Access-Control-Allow-Headers": "Content-Type",
-			},
+				"Access-Control-Allow-Headers": "Content-Type"
+			}
 		};
 	}
 	try {
-		if (!generator) {
-			generator = new GoogleGenerativeAI(apiKey);
-		}
+		if (!generator) generator = new GoogleGenerativeAI(apiKey);
 		if (!event.body) {
 			return {
 				statusCode: 400,
@@ -30,16 +28,16 @@ exports.handler = async (event, context) => {
 				headers: {
 					"Access-Control-Allow-Origin": "*",
 					"Access-Control-Allow-Headers": "Content-Type"
-					},
-				};
-			}
+				}
+			};
+		}
 
 		const requestBody = JSON.parse(event.body);
 		const prompt = requestBody.prompt;
 		let chathistory = requestBody.history || [];
 		const modelconfig = requestBody.modelconfig;
 		if (!model || modelconfig.modelname != model.model || modelconfig.temperature != model.temperature) {
-			model = generator.getGenerativeModel({
+			model = generator.getGenerativeModel([
 				model: modelconfig.modelname,
 				generationConfig: {
 					temperature: modelconfig.temperature,
@@ -47,11 +45,13 @@ exports.handler = async (event, context) => {
 					responseMimeType: responsetype
 				},
 				systemInstruction: {
-					"You are user's assistance, friend,... chat with user to guide and fullfill his/her curiousity, loneliness,...",
-					"Your name is ALAN, a chatbot can recieve image (system will provide), text and output text.",
-					"Generate human-like, natural response."
+					parts: [
+						{ text: "You are user's assistance, friend,... chat with user to guide and fullfill his/her curiousity, loneliness,..." },
+						{ text: "Your name is ALAN, a chatbot can recieve image (system will provide), text and output text." },
+						{ text: "Generate human-like, natural response." }
+					]
 				}
-			});
+			]);
 		}
 
 		const chat = model.startChat({ history: chathistory });
