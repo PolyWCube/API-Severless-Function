@@ -33,7 +33,7 @@ exports.handler = async (event, context) => {
 
 		const imageBytes = Buffer.from(imageDataUrl.split(',')[1], 'base64');
 
-		const result = await model.generateContent({
+		const result = await model.generateContent([
 			{ text : "Describe the image." },
 			{
 				inlineData: {
@@ -41,7 +41,7 @@ exports.handler = async (event, context) => {
 					mimeType: "image/jpeg"
 				}
 			}
-		});
+		]);
 
 		const description = result.response.text();
 
