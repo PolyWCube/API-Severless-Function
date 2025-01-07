@@ -37,7 +37,7 @@ exports.handler = async (event, context) => {
 		let chathistory = requestBody.history || [];
 		const modelconfig = requestBody.modelconfig;
 		if (!model || modelconfig.modelname != model.model || modelconfig.temperature != model.temperature) {
-			model = generator.getGenerativeModel([
+			model = generator.getGenerativeModel({
 				model: modelconfig.modelname,
 				generationConfig: {
 					temperature: modelconfig.temperature,
@@ -51,7 +51,7 @@ exports.handler = async (event, context) => {
 						{ text: "Generate human-like, natural response." }
 					]
 				}
-			]);
+			});
 		}
 
 		const chat = model.startChat({ history: chathistory });

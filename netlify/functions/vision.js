@@ -1,7 +1,7 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const apiKey = process.env.GEMINI_API_KEY_2;
-console.log(apiKey);
+
 const generator = new GoogleGenerativeAI(apiKey);
 const model = generator.getGenerativeModel({
 	model: "gemini-1.5-pro",
@@ -33,13 +33,15 @@ exports.handler = async (event, context) => {
 
 		const imageBytes = Buffer.from(imageDataUrl.split(',')[1], 'base64');
 
-		const result = await model.generateContent([
-			"Describe the image.",
-			inlineData: {
-				data: imageBytes.toString("base64"),
-				mimeType: "image/jpeg"
+		const result = await model.generateContent({
+			{ text : "Describe the image." },
+			{
+				inlineData: {
+					data: imageBytes.toString("base64"),
+					mimeType: "image/jpeg"
+				}
 			}
-		]);
+		});
 
 		const description = result.response.text();
 
