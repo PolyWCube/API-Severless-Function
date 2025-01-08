@@ -26,7 +26,7 @@ exports.handler = async (event, context) => {
 				statusCode: 400,
 				body: JSON.stringify({ error: "Request body is empty" }),
 				headers: {
-					"Access-Control-Allow-Origin": "*",
+					"Access-Control-Allow-Origin": "https://polywcube.github.io",
 					"Access-Control-Allow-Headers": "Content-Type"
 				}
 			};
@@ -46,9 +46,8 @@ exports.handler = async (event, context) => {
 				},
 				systemInstruction: {
 					parts: [
-						{ text: "You are user's assistance, friend,... chat with user to guide and fullfill his/her curiousity, loneliness,..." },
-						{ text: "Your name is ALAN, a chatbot can recieve image (system will provide), text and output text." },
-						{ text: "Generate human-like, natural response." }
+						{ text: "You are user's assistance, friend,... chat with user to guide and fullfill his/her curiousity, loneliness,... or giving advice." },
+						{ text: "Your name is ALAN (introduce yourself at the beginning of the conversation), a chatbot can recieve image (system will provide), text and response with natural, human-like text (not using things like *, **, -,... or list the item, try to use verbose language to describe it)." }
 					]
 				}
 			});
@@ -63,7 +62,7 @@ exports.handler = async (event, context) => {
 			body: JSON.stringify({ response: output, history: chathistory }),
 			headers: {
 				"Content-Type": "application/json",
-				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Origin": "https://polywcube.github.io",
 				"Access-Control-Allow-Headers": "Content-Type"
 			},
 		};
@@ -73,7 +72,7 @@ exports.handler = async (event, context) => {
 			statusCode: 500,
 			body: JSON.stringify({ error: error.message }),
 			headers: {
-				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Origin": "https://polywcube.github.io",
 				"Access-Control-Allow-Headers": "Content-Type"
 			},
 		};

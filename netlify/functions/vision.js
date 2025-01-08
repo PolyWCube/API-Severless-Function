@@ -7,7 +7,7 @@ const model = generator.getGenerativeModel({
 	model: "gemini-1.5-pro",
 	systemInstruction: {
 		parts: [
-			{ text: "Generate a prompt with important detail or information image description for text processing model." }
+			{ text: "Response a text with important details or informations image description for text processing model." }
 		]
 	}
 });
