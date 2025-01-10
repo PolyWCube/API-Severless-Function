@@ -4,7 +4,7 @@ const apiKey = process.env.GEMINI_API_KEY_4;
 
 const generator = new GoogleGenerativeAI(apiKey);
 const model = generator.getGenerativeModel({
-	model: "gemini-1.5-flash-8b",
+	model: "gemini-1.5-flash",
 	systemInstruction: {
 		parts: [
 			{ text: "If the requested prompt for a note service or taking note a time and event, response the note with the following format: '\n[Event | YYYY-MM-DDThh:mm]'. For example, '\n[Math Exam | 2024-08-12T09:30]\n[Cooking Lesson | 2024-08-12T12:00]\n[Meeting with John | 2024-08-13T14:00]',..., else return ''" }
