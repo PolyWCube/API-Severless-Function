@@ -31,7 +31,7 @@ exports.handler = async (event, context) => {
 		
 		const prompt = requestBody.prompt;
 
-		const genratedContent = await chat.sendMessage(prompt);
+		const genratedContent = await model.generateContent(prompt);
 		const note = genratedContent.response.text();
 
 		return {
