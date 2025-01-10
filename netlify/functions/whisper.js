@@ -1,6 +1,6 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const apiKey = process.env.GEMINI_API_KEY_2;
+const apiKey = process.env.GEMINI_API_KEY_3;
 
 const generator = new GoogleGenerativeAI(apiKey);
 const model = generator.getGenerativeModel({
@@ -25,21 +25,21 @@ exports.handler = async (event, context) => {
 	}
 	try {
 		const requestBody = JSON.parse(event.body);
-		const imageDataUrl = requestBody.image;
+		const audioDataUrl = requestBody.audio;
 		const inputprompt = requestBody.prompt;
 
-		if (!imageDataUrl) {
-			return { statusCode: 400, body: JSON.stringify({ error: "No image data provided" }) };
+		if (!audioDataUrl) {
+			return { statusCode: 400, body: JSON.stringify({ error: "No audio data provided" }) };
 		}
 
-		const imageBytes = Buffer.from(imageDataUrl.split(',')[1], 'base64');
+		const audioBytes = Buffer.from(audioDataUrl.split(',')[1], 'base64');
 
 		const result = await model.generateContent([
 			inputprompt,
 			{
 				inlineData: {
-					data: imageBytes.toString("base64"),
-					mimeType: "image/jpeg"
+					data: audioBytes.toString("base64"),
+					mimeType: "audio/mp3"
 				}
 			}
 		]);

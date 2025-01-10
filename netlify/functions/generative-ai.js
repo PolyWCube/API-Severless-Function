@@ -2,11 +2,17 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const apiKey = process.env.GEMINI_API_KEY_1;
 
-let generator;
+const generator = new GoogleGenerativeAI(apiKey);
 let model;
 
 const MAX_TOKEN = 200000;
 const responsetype = "text/plain";
+const systeminstruction = {
+	parts: [
+		{ text: "You are user's assistance, friend,... chat with user to guide and fullfill his/her curiousity, loneliness,... or giving advice." },
+		{ text: "Your name is ALAN (introduce yourself at the beginning of the conversation), a chatbot can recieve image (system will provide), text, audio, noting time-event and response with natural, human-like text (not using things like *, **, -,... or list the item, instead try to use verbose language to describe it)." }
+	]
+};
 
 exports.handler = async (event, context) => {
 	if (event.httpMethod === "OPTIONS") {
@@ -20,7 +26,6 @@ exports.handler = async (event, context) => {
 		};
 	}
 	try {
-		if (!generator) generator = new GoogleGenerativeAI(apiKey);
 		if (!event.body) {
 			return {
 				statusCode: 400,
@@ -44,12 +49,7 @@ exports.handler = async (event, context) => {
 					maxOutputTokens: MAX_TOKEN,
 					responseMimeType: responsetype
 				},
-				systemInstruction: {
-					parts: [
-						{ text: "You are user's assistance, friend,... chat with user to guide and fullfill his/her curiousity, loneliness,... or giving advice." },
-						{ text: "Your name is ALAN (introduce yourself at the beginning of the conversation), a chatbot can recieve image (system will provide), text and response with natural, human-like text (not using things like *, **, -,... or list the item, try to use verbose language to describe it)." }
-					]
-				}
+				systemInstruction: systeminstruction
 			});
 		}
 

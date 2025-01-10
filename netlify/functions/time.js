@@ -1,16 +1,19 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const apiKey = process.env.GEMINI_API_KEY_2;
+const apiKey = process.env.GEMINI_API_KEY_4;
 
 const generator = new GoogleGenerativeAI(apiKey);
 const model = generator.getGenerativeModel({
-	model: "gemini-1.5-pro",
+	model: "gemini-1.5-flash-8b",
 	systemInstruction: {
 		parts: [
-			{ text: "Response a text with important details or informations for text processing model." }
+			{ text: "If the requested prompt for a note service or taking note a time and event, response the note with the following format: '\n[Event | YYYY-MM-DDThh:mm]'. For example, '\n[Math Exam | 2024-08-12T09:30]\n[Cooking Lesson | 2024-08-12T12:00]\n[Meeting with John | 2024-08-13T14:00]',..., else return ''" }
 		]
 	}
 });
+
+const MAX_TOKEN = 200000;
+const responsetype = "text/plain";
 
 exports.handler = async (event, context) => {
 	if (event.httpMethod === "OPTIONS") {
@@ -25,30 +28,15 @@ exports.handler = async (event, context) => {
 	}
 	try {
 		const requestBody = JSON.parse(event.body);
-		const imageDataUrl = requestBody.image;
-		const inputprompt = requestBody.prompt;
+		
+		const prompt = requestBody.prompt;
 
-		if (!imageDataUrl) {
-			return { statusCode: 400, body: JSON.stringify({ error: "No image data provided" }) };
-		}
-
-		const imageBytes = Buffer.from(imageDataUrl.split(',')[1], 'base64');
-
-		const result = await model.generateContent([
-			inputprompt,
-			{
-				inlineData: {
-					data: imageBytes.toString("base64"),
-					mimeType: "image/jpeg"
-				}
-			}
-		]);
-
-		const description = result.response.text();
+		const genratedContent = await chat.sendMessage(prompt);
+		const note = genratedContent.response.text();
 
 		return {
 			statusCode: 200,
-			body: JSON.stringify({ description }),
+			body: JSON.stringify({ note: note }),
 			headers: {
 				"Content-Type": "application/json",
 				"Access-Control-Allow-Origin": "https://polywcube.github.io",
