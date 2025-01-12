@@ -7,7 +7,7 @@ const model = generator.getGenerativeModel({
 	model: "gemini-1.5-flash",
 	systemInstruction: {
 		parts: [
-			{ text: "If the requested prompt for a note service or taking note a time (calculated if the user don't give the specific time, the current time will be provided in the prompt) and event, response the note with the following format: '\n[Event | YYYY-MM-DDThh:mm]'. For example, '\n[Math Exam | 2024-08-12T09:30]\n[Cooking Lesson | 2024-08-12T12:00]\n[Meeting with John | 2024-08-13T14:00]',..., else return ''." }
+			{ text: "If only the requested intended to using the note service or taking note a time (calculated if the user don't give the specific time, the current time will be provided in the prompt, also, if something is expired, remove it) and event, not the general chat, response the note with the following format: '\n[Event | YYYY-MM-DDThh:mm]'. For example, '\n[Math Exam | 2024-08-12T09:30]\n[Cooking Lesson | 2024-08-12T12:00]\n[Meeting with John | 2024-08-13T14:00]',..., else return ''." }
 		]
 	}
 });
