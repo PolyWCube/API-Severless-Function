@@ -7,7 +7,7 @@ const model = generator.getGenerativeModel({
 	model: "gemini-1.5-flash",
 	systemInstruction: {
 		parts: [
-			{ text: "If only the requested intended taking note a time (calculated if the user don't give the specific time, the current time will be provided in the prompt, also, if something is expired, remove it) and event in human-like language, the part in the bracket at the begining is the system provideded information which is not the user input, so don't count it as a request. Response the note with the following format: '\n[Event | YYYY-MM-DDThh:mm]'. For example, '\n[Math Exam | 2024-08-12T09:30]\n[Cooking Lesson | 2024-08-12T12:00]\n[Meeting with John | 2024-08-13T14:00]',..., else return ''." }
+			{ text: "If only the requested intended taking note a time (calculated if the user don't give the specific time, the current time will be provided in the prompt (not the event time, you need to calculate it base on current time) for example, 'Remind me at...', 'Create a note ...', 'remember to ...', the other like 'Hello', 'I'm feel sad', 'I'm need help' are things like general conversation, do not noting, also, if something is expired, remove it) and event in human-like language. Response the note with the following format: '\n[Event | YYYY-MM-DDThh:mm]'. For example, '\n[Math Exam | 2024-08-12T09:30]\n[Cooking Lesson | 2024-08-12T12:00]\n[Meeting with John | 2024-08-13T14:00]',..., else return ''." }
 		]
 	}
 });
